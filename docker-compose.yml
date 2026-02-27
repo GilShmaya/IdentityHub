@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: ./IdentityHub.Api
+      dockerfile: Dockerfile
+    ports:
+      - "5062:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Data Source=/data/identityhub.db
+      - Jwt__Key=change-this-to-a-strong-secret-key-at-least-32-chars!
+      - Jwt__Issuer=IdentityHub
+      - Jwt__Audience=IdentityHub
+      - Cors__AllowedOrigins__0=http://localhost:3000
+    volumes:
+      - api-data:/data
+
+  web:
+    build:
+      context: ./IdentityHub.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  api-data:
