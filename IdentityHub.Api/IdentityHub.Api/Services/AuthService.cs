@@ -22,6 +22,8 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
+        ValidatePassword(request.Password);
+
         if (await _db.Users.AnyAsync(u => u.Email == request.Email))
             throw new InvalidOperationException("A user with this email already exists.");
 
@@ -48,6 +50,18 @@ public class AuthService : IAuthService
 
         var token = GenerateJwtToken(user);
         return new AuthResponse(token, user.Email);
+    }
+
+    private static void ValidatePassword(string password)
+    {
+        if (password.Length < 8)
+            throw new InvalidOperationException("Password must be at least 8 characters long.");
+        if (!password.Any(char.IsUpper))
+            throw new InvalidOperationException("Password must contain at least one uppercase letter.");
+        if (!password.Any(char.IsLower))
+            throw new InvalidOperationException("Password must contain at least one lowercase letter.");
+        if (!password.Any(char.IsDigit))
+            throw new InvalidOperationException("Password must contain at least one digit.");
     }
 
     private string GenerateJwtToken(User user)

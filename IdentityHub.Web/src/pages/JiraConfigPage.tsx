@@ -27,7 +27,7 @@ export function JiraConfigPage() {
         setSiteUrl(data.siteUrl);
       }
     } catch {
-      // Config not set yet — that's okay
+      // Config not set yet
     }
   };
 
@@ -54,7 +54,7 @@ export function JiraConfigPage() {
       <div className="page-card">
         <h2>Jira Configuration</h2>
         <p className="page-description">
-          Connect your Jira workspace to create NHI finding tickets.
+          Connect your Jira site to create NHI finding tickets.
         </p>
 
         {config?.isConfigured && (

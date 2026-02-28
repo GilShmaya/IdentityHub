@@ -5,6 +5,16 @@ import type { AxiosError } from 'axios';
 import type { ApiError } from '../types';
 import './Auth.css';
 
+const PASSWORD_RULES = 'Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 digit';
+
+function validatePassword(password: string): string | null {
+  if (password.length < 8) return 'Password must be at least 8 characters long.';
+  if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter.';
+  if (!/[a-z]/.test(password)) return 'Password must contain at least one lowercase letter.';
+  if (!/[0-9]/.test(password)) return 'Password must contain at least one digit.';
+  return null;
+}
+
 export function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +30,12 @@ export function RegisterPage() {
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
 
@@ -61,9 +77,11 @@ export function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Min. 8 characters"
+              title={PASSWORD_RULES}
               required
               minLength={8}
             />
+            <small className="form-hint">{PASSWORD_RULES}</small>
           </div>
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
@@ -73,6 +91,7 @@ export function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Repeat your password"
+              title={PASSWORD_RULES}
               required
               minLength={8}
             />

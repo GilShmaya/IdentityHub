@@ -5,6 +5,14 @@ namespace IdentityHub.Api.Services;
 public interface IJiraService
 {
     Task<IEnumerable<JiraProjectResponse>> GetProjectsAsync(int userId);
+    Task<IEnumerable<JiraUserResponse>> GetAssignableUsersAsync(int userId, string projectKey);
     Task<TicketResponse> CreateTicketAsync(int userId, CreateTicketRequest request);
+    Task<TicketDetailResponse> GetTicketAsync(int userId, string issueKey);
+    Task UpdateTicketAsync(int userId, string issueKey, UpdateTicketRequest request);
+    Task<TicketCommentResponse> AddCommentAsync(int userId, string issueKey, AddCommentRequest request);
+    Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkAsync(int userId, IList<CreateTicketRequest> requests);
+    Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkWithCredentialsAsync(string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests);
     Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(int userId, string projectKey);
+    Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(string siteUrl, string projectKey);
+    Task<bool> ValidateCredentialsAsync(string email, string apiToken, string siteUrl);
 }

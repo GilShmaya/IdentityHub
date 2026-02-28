@@ -53,7 +53,7 @@ namespace IdentityHub.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApiKeys");
+                    b.ToTable("ApiKeys", (string)null);
                 });
 
             modelBuilder.Entity("IdentityHub.Api.Models.JiraConfiguration", b =>
@@ -84,7 +84,7 @@ namespace IdentityHub.Api.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("JiraConfigurations");
+                    b.ToTable("JiraConfigurations", (string)null);
                 });
 
             modelBuilder.Entity("IdentityHub.Api.Models.TicketReference", b =>
@@ -118,7 +118,7 @@ namespace IdentityHub.Api.Migrations
 
                     b.HasIndex("UserId", "ProjectKey");
 
-                    b.ToTable("TicketReferences");
+                    b.ToTable("TicketReferences", (string)null);
                 });
 
             modelBuilder.Entity("IdentityHub.Api.Models.User", b =>
@@ -141,7 +141,7 @@ namespace IdentityHub.Api.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("IdentityHub.Api.Models.ApiKey", b =>

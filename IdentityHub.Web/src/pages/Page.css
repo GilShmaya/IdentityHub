@@ -85,6 +85,12 @@
 }
 
 /* Tickets */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
 .tickets-list {
   display: flex;
   flex-direction: column;
@@ -127,11 +133,245 @@
   white-space: nowrap;
 }
 
+.ticket-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ticket-action-link {
+  color: #7878bb;
+  font-size: 0.8rem;
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ticket-action-link:hover {
+  border-color: #5858aa;
+  background: #1e1e32;
+}
+
 .empty-state {
   color: #6666aa;
   font-size: 0.85rem;
   padding: 20px 0;
   text-align: center;
+}
+
+/* Ticket Detail */
+.detail-layout {
+  width: 100%;
+  max-width: 800px;
+}
+
+.detail-header {
+  margin-bottom: 20px;
+}
+
+.back-link {
+  color: #7878bb;
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-issue-key {
+  color: #e0e0e0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #2a2a4a;
+  color: #a0a0cc;
+}
+
+.status-pill.status-done,
+.status-pill.status-closed {
+  background: #1a3a1a;
+  color: #6bff6b;
+}
+
+.status-pill.status-in-progress {
+  background: #1a2a3a;
+  color: #6bb8ff;
+}
+
+.status-pill.status-to-do {
+  background: #2a2a2a;
+  color: #aaaaaa;
+}
+
+.jira-link {
+  margin-left: auto;
+  color: #7878bb;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.jira-link:hover {
+  text-decoration: underline;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-content .page-card {
+  max-width: none;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-header h2 {
+  margin-bottom: 0;
+}
+
+.btn-secondary {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid #4a4a8a;
+  color: #7878bb;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #1e1e32;
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn-row .btn-primary {
+  width: auto;
+  padding: 10px 24px;
+}
+
+.btn-row .btn-secondary {
+  padding: 10px 24px;
+}
+
+.detail-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.detail-label {
+  color: #6666aa;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.detail-description {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* Comments */
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-form .form-group {
+  margin-bottom: 8px;
+}
+
+.comment-form textarea {
+  min-height: 60px;
+}
+
+.comment-form .btn-primary {
+  width: auto;
+  padding: 8px 20px;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-item {
+  padding: 12px 14px;
+  background: #12121e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.comment-author {
+  color: #7878bb;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.comment-date {
+  color: #6666aa;
+  font-size: 0.75rem;
+}
+
+.comment-body {
+  color: #c0c0d8;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  line-height: 1.4;
 }
 
 /* API Keys */

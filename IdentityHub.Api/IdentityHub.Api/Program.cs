@@ -2,7 +2,6 @@ using System.Text;
 using IdentityHub.Api.Data;
 using IdentityHub.Api.Middleware;
 using IdentityHub.Api.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,8 +33,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
-})
-.AddScheme<AuthenticationSchemeOptions, ApiKeyAuthHandler>("ApiKey", null);
+});
 
 builder.Services.AddAuthorization();
 
@@ -43,7 +41,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJiraConfigService, JiraConfigService>();
 builder.Services.AddScoped<IJiraService, JiraService>();
-builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddHttpClient();
 
 // CORS
@@ -60,7 +57,12 @@ builder.Services.AddCors(options =>
 // Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 

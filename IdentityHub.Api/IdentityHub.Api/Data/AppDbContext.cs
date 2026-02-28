@@ -10,7 +10,6 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<JiraConfiguration> JiraConfigurations => Set<JiraConfiguration>();
     public DbSet<TicketReference> TicketReferences => Set<TicketReference>();
-    public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,15 +34,6 @@ public class AppDbContext : DbContext
              .HasForeignKey(t => t.UserId)
              .OnDelete(DeleteBehavior.Cascade);
             e.HasIndex(t => new { t.UserId, t.ProjectKey });
-        });
-
-        modelBuilder.Entity<ApiKey>(e =>
-        {
-            e.HasOne(a => a.User)
-             .WithMany(u => u.ApiKeys)
-             .HasForeignKey(a => a.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
-            e.HasIndex(a => a.KeyHash).IsUnique();
         });
     }
 }
