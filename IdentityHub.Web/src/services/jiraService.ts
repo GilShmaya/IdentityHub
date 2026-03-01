@@ -1,5 +1,5 @@
 import api from './api';
-import type { JiraConfigResponse, JiraProject, JiraUser, Ticket, TicketDetail, TicketComment } from '../types';
+import type { JiraConfigResponse, JiraProject, JiraUser, Ticket, TicketDetail, TicketComment, JiraTransition } from '../types';
 
 export const jiraService = {
   async saveConfig(email: string, apiToken: string, siteUrl: string): Promise<void> {
@@ -60,5 +60,14 @@ export const jiraService = {
   async addComment(issueKey: string, body: string): Promise<TicketComment> {
     const { data } = await api.post<TicketComment>(`/api/jira/tickets/${issueKey}/comments`, { body });
     return data;
+  },
+
+  async getTransitions(issueKey: string): Promise<JiraTransition[]> {
+    const { data } = await api.get<JiraTransition[]>(`/api/jira/tickets/${issueKey}/transitions`);
+    return data;
+  },
+
+  async transitionTicket(issueKey: string, transitionId: string): Promise<void> {
+    await api.post(`/api/jira/tickets/${issueKey}/transitions`, { transitionId });
   },
 };

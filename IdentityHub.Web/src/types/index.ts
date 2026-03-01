@@ -46,6 +46,11 @@ export interface TicketComment {
   created: string;
 }
 
+export interface JiraTransition {
+  id: string;
+  name: string;
+}
+
 export interface ApiError {
   error: string;
 }

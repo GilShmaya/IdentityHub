@@ -30,9 +30,31 @@ export function LoginPage() {
 
   return (
     <div className="auth-container">
+      <div className="auth-about">
+        <h2>⬡ IdentityHub</h2>
+        <p>
+          A Non-Human Identity management platform that helps security teams
+          discover, track, and remediate machine identity risks — with native
+          Jira integration.
+        </p>
+        <div className="auth-about-features">
+          <div className="auth-about-feature">
+            <strong>Jira Integration</strong>
+            <span>Create, edit, comment on, and transition Jira tickets directly.</span>
+          </div>
+          <div className="auth-about-feature">
+            <strong>External API</strong>
+            <span>Stateless REST API for CI/CD pipelines and security scanners.</span>
+          </div>
+          <div className="auth-about-feature">
+            <strong>Multi-User &amp; Secure</strong>
+            <span>Shared data within org and project, isolated across organizations.</span>
+          </div>
+        </div>
+      </div>
       <div className="auth-card">
-        <h1>🔐 IdentityHub</h1>
-        <p className="auth-subtitle">Sign in to manage your NHI findings</p>
+        <h1>Sign In</h1>
+        <p className="auth-subtitle">Access your NHI management dashboard</p>
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">

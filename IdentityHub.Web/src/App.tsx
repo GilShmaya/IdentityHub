@@ -7,6 +7,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { TicketsPage } from './pages/TicketsPage';
 import { TicketDetailPage } from './pages/TicketDetailPage';
 import { JiraConfigPage } from './pages/JiraConfigPage';
+import { DocsPage } from './pages/DocsPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute><TicketsPage /></ProtectedRoute>} />
             <Route path="/tickets/:issueKey" element={<ProtectedRoute><TicketDetailPage /></ProtectedRoute>} />
             <Route path="/jira-config" element={<ProtectedRoute><JiraConfigPage /></ProtectedRoute>} />
+            <Route path="/docs" element={<ProtectedRoute><DocsPage /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

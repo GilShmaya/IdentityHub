@@ -234,4 +234,36 @@ public class JiraController : BaseController
         return StatusCode(201, comment);
     }
 
+    /// <summary>
+    /// Get available status transitions for a Jira ticket.
+    /// </summary>
+    /// <param name="issueKey">The Jira issue key (e.g., "NHI-42").</param>
+    /// <returns>A list of transitions the ticket can move to.</returns>
+    /// <response code="200">Returns available transitions.</response>
+    /// <response code="401">User is not authenticated.</response>
+    [HttpGet("tickets/{issueKey}/transitions")]
+    [ProducesResponseType(typeof(IEnumerable<TransitionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<TransitionResponse>>> GetTransitions(string issueKey)
+    {
+        var transitions = await _jiraService.GetTransitionsAsync(GetUserId(), issueKey);
+        return Ok(transitions);
+    }
+
+    /// <summary>
+    /// Transition a Jira ticket to a new status.
+    /// </summary>
+    /// <param name="issueKey">The Jira issue key (e.g., "NHI-42").</param>
+    /// <param name="request">The transition ID to apply.</param>
+    /// <response code="204">Transition applied successfully.</response>
+    /// <response code="401">User is not authenticated.</response>
+    [HttpPost("tickets/{issueKey}/transitions")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> TransitionTicket(string issueKey, [FromBody] TransitionRequest request)
+    {
+        await _jiraService.TransitionTicketAsync(GetUserId(), issueKey, request);
+        return NoContent();
+    }
+
 }

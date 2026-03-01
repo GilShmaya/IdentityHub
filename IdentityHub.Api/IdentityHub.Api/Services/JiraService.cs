@@ -118,11 +118,13 @@ public class JiraService : IJiraService
         {
             foreach (var c in commentArray.EnumerateArray())
             {
+                var cDateStr = c.GetProperty("created").GetString();
+                var cDate = DateTimeOffset.TryParse(cDateStr, out var cDto) ? cDto.UtcDateTime : DateTime.UtcNow;
                 comments.Add(new TicketCommentResponse(
                     c.GetProperty("id").GetString()!,
                     c.GetProperty("author").GetProperty("displayName").GetString()!,
                     ExtractCommentText(c.GetProperty("body")),
-                    c.GetProperty("created").GetDateTime()
+                    cDate
                 ));
             }
         }
@@ -228,12 +230,51 @@ public class JiraService : IJiraService
         }
 
         var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+        var createdStr = result.GetProperty("created").GetString();
+        var created = DateTimeOffset.TryParse(createdStr, out var dto) ? dto.UtcDateTime : DateTime.UtcNow;
         return new TicketCommentResponse(
             result.GetProperty("id").GetString()!,
             result.GetProperty("author").GetProperty("displayName").GetString()!,
             request.Body,
-            result.GetProperty("created").GetDateTime()
+            created
         );
+    }
+
+    public async Task<IEnumerable<TransitionResponse>> GetTransitionsAsync(int userId, string issueKey)
+    {
+        var client = await CreateClientAsync(userId);
+        var response = await client.GetAsync($"rest/api/3/issue/{issueKey}/transitions");
+        response.EnsureSuccessStatusCode();
+
+        var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+        var transitions = new List<TransitionResponse>();
+        if (json.TryGetProperty("transitions", out var arr))
+        {
+            foreach (var t in arr.EnumerateArray())
+            {
+                transitions.Add(new TransitionResponse(
+                    t.GetProperty("id").GetString()!,
+                    t.GetProperty("name").GetString()!
+                ));
+            }
+        }
+        return transitions;
+    }
+
+    public async Task TransitionTicketAsync(int userId, string issueKey, TransitionRequest request)
+    {
+        var client = await CreateClientAsync(userId);
+        var payload = new { transition = new { id = request.TransitionId } };
+        var json = JsonSerializer.Serialize(payload);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await client.PostAsync($"rest/api/3/issue/{issueKey}/transitions", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            _logger.LogError("Jira transition error: {StatusCode} {Error}", response.StatusCode, error);
+            throw new HttpRequestException($"Failed to transition ticket: {response.StatusCode}");
+        }
     }
 
     public async Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkAsync(int userId, IList<CreateTicketRequest> requests)

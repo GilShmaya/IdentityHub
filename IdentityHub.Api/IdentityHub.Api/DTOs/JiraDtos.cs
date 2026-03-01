@@ -48,6 +48,12 @@ public record UpdateTicketRequest(
     [MaxLength(32)] string? Priority = null
 );
 
+public record TransitionResponse(string Id, string Name);
+
+public record TransitionRequest(
+    [Required] string TransitionId
+);
+
 public record AddCommentRequest(
     [Required, MaxLength(8000)] string Body
 );

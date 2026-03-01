@@ -10,6 +10,8 @@ public interface IJiraService
     Task<TicketDetailResponse> GetTicketAsync(int userId, string issueKey);
     Task UpdateTicketAsync(int userId, string issueKey, UpdateTicketRequest request);
     Task<TicketCommentResponse> AddCommentAsync(int userId, string issueKey, AddCommentRequest request);
+    Task<IEnumerable<TransitionResponse>> GetTransitionsAsync(int userId, string issueKey);
+    Task TransitionTicketAsync(int userId, string issueKey, TransitionRequest request);
     Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkAsync(int userId, IList<CreateTicketRequest> requests);
     Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkWithCredentialsAsync(string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests);
     Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(int userId, string projectKey);

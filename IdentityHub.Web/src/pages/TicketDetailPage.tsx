@@ -1,7 +1,7 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { jiraService } from '../services/jiraService';
-import type { TicketDetail, JiraUser } from '../types';
+import type { TicketDetail, JiraUser, JiraTransition } from '../types';
 import type { AxiosError } from 'axios';
 import type { ApiError } from '../types';
 import './Page.css';
@@ -12,6 +12,7 @@ export function TicketDetailPage() {
   const { issueKey } = useParams<{ issueKey: string }>();
   const [ticket, setTicket] = useState<TicketDetail | null>(null);
   const [assignableUsers, setAssignableUsers] = useState<JiraUser[]>([]);
+  const [transitions, setTransitions] = useState<JiraTransition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
@@ -50,6 +51,12 @@ export function TicketDetailPage() {
         setAssignableUsers(users);
       } catch {
         setAssignableUsers([]);
+      }
+      try {
+        const t = await jiraService.getTransitions(key);
+        setTransitions(t);
+      } catch {
+        setTransitions([]);
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiError>;
@@ -103,6 +110,23 @@ export function TicketDetailPage() {
       setError(axiosError.response?.data?.error || 'Failed to add comment.');
     } finally {
       setAddingComment(false);
+    }
+  };
+
+  const handleTransition = async (transitionId: string) => {
+    if (!issueKey) return;
+    setSaving(true);
+    setError('');
+    setSuccessMsg('');
+    try {
+      await jiraService.transitionTicket(issueKey, transitionId);
+      setSuccessMsg('Status updated successfully.');
+      await loadTicket(issueKey);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      setError(axiosError.response?.data?.error || 'Failed to update status.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -243,6 +267,23 @@ export function TicketDetailPage() {
                     <span className="detail-value">{ticket.status}</span>
                   </div>
                 </div>
+                {transitions.length > 0 && (
+                  <div className="detail-field">
+                    <span className="detail-label">Move to</span>
+                    <div className="transition-buttons">
+                      {transitions.map((t) => (
+                        <button
+                          key={t.id}
+                          className="btn-transition"
+                          disabled={saving}
+                          onClick={() => handleTransition(t.id)}
+                        >
+                          {t.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

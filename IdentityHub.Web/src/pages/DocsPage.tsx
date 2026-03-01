@@ -1,0 +1,134 @@
+import './Docs.css';
+
+export function DocsPage() {
+  return (
+    <div className="docs-container">
+      <main className="docs-content docs-content-centered">
+        <header className="docs-hero">
+          <div className="docs-hero-tag">About</div>
+          <h1>IdentityHub</h1>
+          <p>
+            A Non-Human Identity management platform that helps security teams
+            discover, track, and remediate machine identity risks — with native
+            Jira integration for streamlined workflows.
+          </p>
+        </header>
+
+        <section className="docs-section">
+          <h2>What is IdentityHub?</h2>
+          <p>
+            Organizations manage thousands of non-human identities: service accounts,
+            API keys, service principals, OAuth clients, and certificates. When these
+            identities become stale, over-privileged, or unrotated, they pose serious
+            security risks.
+          </p>
+          <p>
+            IdentityHub provides a centralized platform to report and track NHI
+            findings as Jira tickets. Security teams can create, edit, comment on,
+            and transition tickets directly from the web portal — while automated
+            systems can use the external API to submit findings programmatically.
+          </p>
+        </section>
+
+        <section className="docs-section">
+          <h2>Key Features</h2>
+          <div className="docs-feature-grid">
+            <div className="docs-feature">
+              <span className="docs-feature-icon">⬡</span>
+              <h3>Jira Integration</h3>
+              <p>Create, view, edit, comment on, and transition Jira tickets. Supports assignee, priority, and workflow status changes.</p>
+            </div>
+            <div className="docs-feature">
+              <span className="docs-feature-icon">◈</span>
+              <h3>External API</h3>
+              <p>Stateless REST API for CI/CD pipelines and scanners. Bulk create up to 50 tickets in a single request via Jira's bulk API.</p>
+            </div>
+            <div className="docs-feature">
+              <span className="docs-feature-icon">△</span>
+              <h3>Multi-User &amp; Secure</h3>
+              <p>JWT authentication, per-user Jira configuration, encrypted credentials at rest. Users in the same organization and project share ticket data — data is isolated across organizations.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="docs-section">
+          <h2>Getting Started</h2>
+          <div className="docs-steps">
+            <div className="docs-step">
+              <span className="docs-step-num">1</span>
+              <div>
+                <h3>Create an account</h3>
+                <p>Register with your email and a strong password.</p>
+              </div>
+            </div>
+            <div className="docs-step">
+              <span className="docs-step-num">2</span>
+              <div>
+                <h3>Connect Jira</h3>
+                <p>Go to Jira Settings and enter your Jira email, API token, and site URL.</p>
+              </div>
+            </div>
+            <div className="docs-step">
+              <span className="docs-step-num">3</span>
+              <div>
+                <h3>Create tickets</h3>
+                <p>Select a project, fill in the finding details, and submit. Your ticket appears in Jira instantly.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="docs-section">
+          <h2>REST API</h2>
+          <p>
+            IdentityHub exposes a stateless external API for programmatic access.
+            No account needed — provide your Jira credentials directly in each request.
+          </p>
+
+          <div className="docs-endpoint">
+            <div className="docs-endpoint-header">
+              <span className="docs-method docs-method-post">POST</span>
+              <code>/api/v1/tickets</code>
+            </div>
+            <p>Bulk create 1–50 NHI finding tickets. Provide Jira credentials and an array of tickets in the request body.</p>
+            <div className="docs-code-group docs-code-group-full">
+              <div className="docs-code-block">
+                <span className="docs-code-label">Example</span>
+                <pre>{`curl -X POST http://localhost:5202/api/v1/tickets \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "jiraEmail": "bot@company.com",
+    "jiraApiToken": "ATATT3xFfGF0...",
+    "jiraSiteUrl": "https://yoursite.atlassian.net",
+    "tickets": [{
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "NHI",
+      "priority": "High"
+    }]
+  }'`}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div className="docs-endpoint">
+            <div className="docs-endpoint-header">
+              <span className="docs-method docs-method-get">GET</span>
+              <code>/api/v1/tickets?projectKey={'{key}'}</code>
+            </div>
+            <p>Get the 10 most recent tickets for a project. Pass Jira credentials as headers.</p>
+            <div className="docs-code-group docs-code-group-full">
+              <div className="docs-code-block">
+                <span className="docs-code-label">Example</span>
+                <pre>{`curl http://localhost:5202/api/v1/tickets?projectKey=NHI \\
+  -H "X-Jira-Email: bot@company.com" \\
+  -H "X-Jira-Api-Token: ATATT3xFfGF0..." \\
+  -H "X-Jira-Site-Url: https://yoursite.atlassian.net"`}</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}

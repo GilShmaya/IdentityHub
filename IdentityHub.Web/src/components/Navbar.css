@@ -2,65 +2,92 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  height: 56px;
-  background: #1a1a2e;
-  border-bottom: 1px solid #2a2a4a;
+  padding: 0 28px;
+  height: 58px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .navbar-brand a {
-  color: #e0e0e0;
+  color: var(--text-primary);
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-brand .brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
 }
 
 .navbar-links {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .navbar-links a {
-  color: #a0a0b8;
+  color: var(--text-secondary);
   text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: background 0.2s, color 0.2s;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.87rem;
+  font-weight: 500;
+  transition: all 0.2s var(--ease);
+  border: 1px solid transparent;
 }
 
 .navbar-links a:hover {
-  background: #2a2a4a;
-  color: #e0e0e0;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .navbar-links a.active {
-  background: #3a3a5a;
-  color: #fff;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border-color: var(--border-focus);
 }
 
 .navbar-user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .navbar-email {
-  color: #8888aa;
-  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
 }
 
 .btn-logout {
   background: transparent;
-  border: 1px solid #555;
-  color: #ccc;
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
   padding: 6px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.2s;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.2s var(--ease);
 }
 
 .btn-logout:hover {
-  background: #333;
+  background: var(--error-bg);
+  border-color: var(--error-border);
+  color: var(--error);
 }
