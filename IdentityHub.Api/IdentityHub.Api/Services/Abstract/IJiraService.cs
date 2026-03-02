@@ -2,6 +2,7 @@ using IdentityHub.Api.DTOs;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Contract for Jira ticket CRUD and bulk operations.</summary>
 public interface IJiraService
 {
     Task<IEnumerable<JiraProjectResponse>> GetProjectsAsync(int userId);

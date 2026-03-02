@@ -1,5 +1,6 @@
 namespace IdentityHub.Api.Middleware;
 
+/// <summary>Middleware that adds security headers to all HTTP responses.</summary>
 public class SecurityHeadersMiddleware
 {
     private readonly RequestDelegate _next;

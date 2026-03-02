@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Interacts with the Jira REST API for ticket CRUD and bulk operations.</summary>
 public class JiraService : IJiraService
 {
     private readonly IJiraConfigService _configService;

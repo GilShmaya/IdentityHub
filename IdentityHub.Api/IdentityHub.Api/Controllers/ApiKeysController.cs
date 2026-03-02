@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityHub.Api.Controllers;
 
+/// <summary>API key management endpoints for creation, listing, and revocation.</summary>
 [Route("api/keys")]
 [ApiController]
 [Authorize]

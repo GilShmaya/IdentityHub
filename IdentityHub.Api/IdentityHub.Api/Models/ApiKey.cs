@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityHub.Api.Models;
 
+/// <summary>Represents an API key used for external REST API authentication.</summary>
 public class ApiKey
 {
     public int Id { get; set; }

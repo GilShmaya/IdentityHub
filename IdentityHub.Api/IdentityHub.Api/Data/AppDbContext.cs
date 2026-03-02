@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityHub.Api.Data;
 
+/// <summary>EF Core database context for IdentityHub entities.</summary>
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

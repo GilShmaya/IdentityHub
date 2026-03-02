@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityHub.Api.Controllers;
 
+/// <summary>Base controller providing shared UserId extraction from JWT claims.</summary>
 [ApiController]
 public abstract class BaseController : ControllerBase
 {

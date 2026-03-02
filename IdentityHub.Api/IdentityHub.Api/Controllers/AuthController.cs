@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace IdentityHub.Api.Controllers;
 
+/// <summary>Authentication endpoints for user registration and login.</summary>
 [Route("api/[controller]")]
 [EnableRateLimiting("auth")]
 public class AuthController : BaseController

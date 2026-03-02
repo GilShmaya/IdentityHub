@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityHub.Api.Controllers.PublicApi;
 
+/// <summary>External REST API endpoint for programmatic NHI finding ticket creation.</summary>
 [Route("api/v1/tickets")]
 [ApiController]
 [Authorize(AuthenticationSchemes = ApiKeyAuthDefaults.AuthenticationScheme)]

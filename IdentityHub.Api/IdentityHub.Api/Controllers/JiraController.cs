@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityHub.Api.Controllers;
 
+/// <summary>Jira integration endpoints for configuration, projects, and tickets.</summary>
 [Route("api/jira")]
 [Authorize]
 public class JiraController : BaseController

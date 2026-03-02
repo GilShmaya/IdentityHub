@@ -6,14 +6,17 @@ using Microsoft.Extensions.Options;
 
 namespace IdentityHub.Api.Authentication;
 
+/// <summary>Constants for the API key authentication scheme and header name.</summary>
 public static class ApiKeyAuthDefaults
 {
     public const string AuthenticationScheme = "ApiKey";
     public const string HeaderName = "X-Api-Key";
 }
 
+/// <summary>Options for the API key authentication scheme.</summary>
 public class ApiKeyAuthOptions : AuthenticationSchemeOptions { }
 
+/// <summary>Authentication handler that validates API keys from the X-Api-Key header.</summary>
 public class ApiKeyAuthHandler : AuthenticationHandler<ApiKeyAuthOptions>
 {
     private readonly IApiKeyService _apiKeyService;

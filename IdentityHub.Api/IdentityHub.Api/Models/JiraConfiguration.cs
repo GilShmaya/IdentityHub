@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityHub.Api.Models;
 
+/// <summary>Per-user Jira connection credentials with encrypted API token.</summary>
 public class JiraConfiguration
 {
     public int Id { get; set; }

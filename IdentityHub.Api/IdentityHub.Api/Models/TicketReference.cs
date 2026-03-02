@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityHub.Api.Models;
 
+/// <summary>Local record of a Jira ticket created through IdentityHub.</summary>
 public class TicketReference
 {
     public int Id { get; set; }

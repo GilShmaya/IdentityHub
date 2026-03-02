@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Handles user registration, login, password validation, and JWT generation.</summary>
 public class AuthService : IAuthService
 {
     private readonly AppDbContext _db;

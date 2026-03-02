@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Manages API key creation, hash-based validation, and revocation.</summary>
 public class ApiKeyService : IApiKeyService
 {
     private const int KEY_LENGTH = 32;

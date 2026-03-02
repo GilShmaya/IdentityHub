@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Manages per-user Jira credentials with encryption via Data Protection.</summary>
 public class JiraConfigService : IJiraConfigService
 {
     private const string PURPOSE = "JiraApiToken";

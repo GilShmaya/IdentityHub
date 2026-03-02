@@ -2,6 +2,7 @@ using IdentityHub.Api.DTOs;
 
 namespace IdentityHub.Api.Services;
 
+/// <summary>Contract for API key creation, validation, and revocation.</summary>
 public interface IApiKeyService
 {
     Task<CreateApiKeyResponse> CreateAsync(int userId, string name);

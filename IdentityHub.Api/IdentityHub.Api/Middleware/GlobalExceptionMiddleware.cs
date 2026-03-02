@@ -3,6 +3,7 @@ using System.Text.Json;
 
 namespace IdentityHub.Api.Middleware;
 
+/// <summary>Global exception handler that returns safe JSON error responses.</summary>
 public class GlobalExceptionMiddleware
 {
     private readonly RequestDelegate _next;
