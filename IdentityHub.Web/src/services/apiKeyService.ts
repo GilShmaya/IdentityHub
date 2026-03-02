@@ -2,8 +2,8 @@ import api from './api';
 import type { ApiKeyInfo, CreateApiKeyResponse } from '../types';
 
 export const apiKeyService = {
-  async create(name: string): Promise<CreateApiKeyResponse> {
-    const { data } = await api.post<CreateApiKeyResponse>('/api/keys', { name });
+  async create(name: string, expiresInDays: number): Promise<CreateApiKeyResponse> {
+    const { data } = await api.post<CreateApiKeyResponse>('/api/keys', { name, expiresInDays });
     return data;
   },
 

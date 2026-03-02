@@ -22,5 +22,7 @@ public class ApiKey
 
     public bool IsRevoked { get; set; }
 
+    public DateTime ExpiresAt { get; set; }
+
     public User User { get; set; } = null!;
 }

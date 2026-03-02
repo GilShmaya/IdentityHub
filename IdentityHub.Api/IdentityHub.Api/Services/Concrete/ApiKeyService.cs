@@ -19,11 +19,12 @@ public class ApiKeyService : IApiKeyService
         _db = db;
     }
 
-    public async Task<CreateApiKeyResponse> CreateAsync(int userId, string name)
+    public async Task<CreateApiKeyResponse> CreateAsync(int userId, string name, int expiresInDays)
     {
         var rawKey = GenerateRawKey();
         var prefix = rawKey[..PREFIX_LENGTH];
         var hash = HashKey(rawKey);
+        var now = DateTime.UtcNow;
 
         var apiKey = new ApiKey
         {
@@ -31,13 +32,14 @@ public class ApiKeyService : IApiKeyService
             Name = name,
             KeyHash = hash,
             KeyPrefix = prefix,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = now,
+            ExpiresAt = now.AddDays(expiresInDays)
         };
 
         _db.ApiKeys.Add(apiKey);
         await _db.SaveChangesAsync();
 
-        return new CreateApiKeyResponse(apiKey.Id, apiKey.Name, rawKey, prefix, apiKey.CreatedAt);
+        return new CreateApiKeyResponse(apiKey.Id, apiKey.Name, rawKey, prefix, apiKey.CreatedAt, apiKey.ExpiresAt);
     }
 
     public async Task<int?> ValidateAsync(string rawKey)
@@ -52,6 +54,11 @@ public class ApiKeyService : IApiKeyService
 
         var hash = HashKey(rawKey);
         var match = candidates.FirstOrDefault(k => k.KeyHash == hash);
+
+        // Reject expired keys
+        if (match is not null && match.ExpiresAt <= DateTime.UtcNow)
+            return null;
+
         return match?.UserId;
     }
 
@@ -69,7 +76,7 @@ public class ApiKeyService : IApiKeyService
         return await _db.ApiKeys
             .Where(k => k.UserId == userId)
             .OrderByDescending(k => k.CreatedAt)
-            .Select(k => new ApiKeyResponse(k.Id, k.Name, k.KeyPrefix, k.CreatedAt, k.IsRevoked))
+            .Select(k => new ApiKeyResponse(k.Id, k.Name, k.KeyPrefix, k.CreatedAt, k.ExpiresAt, k.IsRevoked, k.ExpiresAt <= DateTime.UtcNow))
             .ToListAsync();
     }
 

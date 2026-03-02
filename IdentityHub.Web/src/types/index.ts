@@ -60,7 +60,9 @@ export interface ApiKeyInfo {
   name: string;
   prefix: string;
   createdAt: string;
+  expiresAt: string;
   isRevoked: boolean;
+  isExpired: boolean;
 }
 
 export interface CreateApiKeyResponse {
@@ -69,4 +71,5 @@ export interface CreateApiKeyResponse {
   key: string;
   prefix: string;
   createdAt: string;
+  expiresAt: string;
 }

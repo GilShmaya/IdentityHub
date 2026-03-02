@@ -28,7 +28,7 @@ public class ApiKeysController : BaseController
     [ProducesResponseType(typeof(CreateApiKeyResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CreateApiKeyRequest request)
     {
-        var result = await _apiKeyService.CreateAsync(GetUserId(), request.Name);
+        var result = await _apiKeyService.CreateAsync(GetUserId(), request.Name, request.ExpiresInDays);
         return StatusCode(201, result);
     }
 
