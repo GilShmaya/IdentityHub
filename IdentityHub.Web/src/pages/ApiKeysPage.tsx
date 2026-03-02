@@ -3,8 +3,8 @@ import { apiKeyService } from '../services/apiKeyService';
 import type { ApiKeyInfo } from '../types';
 import type { AxiosError } from 'axios';
 import type { ApiError } from '../types';
-import './Page.css';
-import './ApiKeys.css';
+import './css/Page.css';
+import './css/ApiKeys.css';
 
 export function ApiKeysPage() {
   const [keys, setKeys] = useState<ApiKeyInfo[]>([]);

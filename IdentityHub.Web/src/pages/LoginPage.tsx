@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import type { AxiosError } from "axios";
 import type { ApiError } from "../types";
-import "./Auth.css";
+import "./css/Auth.css";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");

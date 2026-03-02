@@ -3,7 +3,7 @@ import { jiraService } from '../services/jiraService';
 import type { JiraConfigResponse } from '../types';
 import type { AxiosError } from 'axios';
 import type { ApiError } from '../types';
-import './Page.css';
+import './css/Page.css';
 
 export function JiraConfigPage() {
   const [email, setEmail] = useState('');

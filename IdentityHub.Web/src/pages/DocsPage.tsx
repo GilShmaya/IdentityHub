@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import "./Docs.css";
+import "./css/Docs.css";
 
 export function DocsPage() {
   const { hash } = useLocation();

@@ -4,7 +4,7 @@ import { jiraService } from '../services/jiraService';
 import type { JiraProject, JiraUser, Ticket } from '../types';
 import type { AxiosError } from 'axios';
 import type { ApiError } from '../types';
-import './Page.css';
+import './css/Page.css';
 
 const PRIORITIES = ['Highest', 'High', 'Medium', 'Low', 'Lowest'];
 
