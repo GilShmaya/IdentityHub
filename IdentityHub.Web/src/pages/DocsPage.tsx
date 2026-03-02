@@ -57,8 +57,17 @@ export function DocsPage() {
               <span className="docs-feature-icon">◈</span>
               <h3>External API</h3>
               <p>
-                Support REST API for CI/CD pipelines and scanners. Bulk create
-                up to 50 tickets in a single request via Jira's bulk API.
+                API key-authenticated REST API for CI/CD pipelines and scanners.
+                Bulk create up to 50 tickets per request. Tickets created via the
+                API are linked to your account and visible in the portal.
+              </p>
+            </div>
+            <div className="docs-feature">
+              <span className="docs-feature-icon">⚿</span>
+              <h3>API Key Management</h3>
+              <p>
+                Generate, view, and revoke API keys from the portal. Each key is
+                tied to your account for audit and access control.
               </p>
             </div>
             <div className="docs-feature">
@@ -95,6 +104,16 @@ export function DocsPage() {
             </div>
             <div className="docs-step">
               <span className="docs-step-num">3</span>
+              <div>
+                <h3>Generate an API key</h3>
+                <p>
+                  Go to API Keys to create a key for programmatic access via the
+                  REST API.
+                </p>
+              </div>
+            </div>
+            <div className="docs-step">
+              <span className="docs-step-num">4</span>
               <div>
                 <h3>Create tickets</h3>
                 <p>

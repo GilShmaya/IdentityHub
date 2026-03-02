@@ -14,9 +14,8 @@
 #    }]
 #  }'
 POST http://localhost:5202/api/v1/tickets
-X-Api-Key: YOUR_API_KEY
+X-Api-Key: fkbG6pcD4mXz83zSBQnF-8sxU6OOZm29GBX2VCbH_fw
 Content-Type: application/json
-
 {
   "jiraEmail": "bot@company.com",
   "jiraApiToken": "ATATT3xFfGF0...",
