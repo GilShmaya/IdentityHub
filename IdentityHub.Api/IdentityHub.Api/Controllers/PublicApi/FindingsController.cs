@@ -44,6 +44,9 @@ public class FindingsController : BaseController
 
         if (request.Tickets.Count > MAX_BATCH_SIZE)
             return BadRequest(new { error = $"Batch size exceeds the maximum of {MAX_BATCH_SIZE} tickets per request." });
+        
+        if (!await _jiraService.ValidateCredentialsAsync(request.JiraEmail, request.JiraApiToken, request.JiraSiteUrl))
+            return Unauthorized(new { error = "Invalid Jira credentials." });
 
         var userId = GetUserId();
         var ticketRequests = request.Tickets
