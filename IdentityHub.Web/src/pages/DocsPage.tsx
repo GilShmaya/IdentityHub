@@ -109,9 +109,10 @@ export function DocsPage() {
         <section id="rest-api" className="docs-section">
           <h2>REST API</h2>
           <p>
-            IdentityHub exposes a stateless external API for programmatic
-            access. No account needed — provide your Jira credentials directly
-            in each request.
+            IdentityHub exposes an external API for programmatic access.
+            Authentication is required via an API key (generated in the portal
+            under API Keys). Tickets created through the API are linked to your
+            account and visible in the web portal.
           </p>
 
           <div className="docs-endpoint">
@@ -128,6 +129,7 @@ export function DocsPage() {
                 <span className="docs-code-label">Example</span>
                 <pre>{`curl -X POST http://localhost:5202/api/v1/tickets \\
   -H "Content-Type: application/json" \\
+  -H "X-Api-Key: YOUR_API_KEY" \\
   -d '{
     "jiraEmail": "bot@company.com",
     "jiraApiToken": "ATATT3xFfGF0...",
@@ -156,6 +158,7 @@ export function DocsPage() {
               <div className="docs-code-block">
                 <span className="docs-code-label">Example</span>
                 <pre>{`curl http://localhost:5202/api/v1/tickets?projectKey=NHI \\
+  -H "X-Api-Key: YOUR_API_KEY" \\
   -H "X-Jira-Email: bot@company.com" \\
   -H "X-Jira-Api-Token: ATATT3xFfGF0..." \\
   -H "X-Jira-Site-Url: https://yoursite.atlassian.net"`}</pre>

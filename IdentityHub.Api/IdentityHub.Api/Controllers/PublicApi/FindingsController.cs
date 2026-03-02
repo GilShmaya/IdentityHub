@@ -1,12 +1,15 @@
+using IdentityHub.Api.Authentication;
 using IdentityHub.Api.DTOs;
 using IdentityHub.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityHub.Api.Controllers;
+namespace IdentityHub.Api.Controllers.PublicApi;
 
 [Route("api/v1/tickets")]
 [ApiController]
-public class FindingsController : ControllerBase
+[Authorize(AuthenticationSchemes = ApiKeyAuthDefaults.AuthenticationScheme)]
+public class FindingsController : BaseController
 {
     private const int MAX_BATCH_SIZE = 50;
     private readonly IJiraService _jiraService;
@@ -22,17 +25,12 @@ public class FindingsController : ControllerBase
     /// <remarks>
     /// Route: POST /api/v1/tickets
     ///
-    /// Stateless endpoint — no user account required. The caller provides their Jira credentials
-    /// (email, API token, site URL) directly in the request body along with the tickets to create.
-    /// Uses Jira's bulk create API for efficient processing.
+    /// Requires API key authentication via the X-Api-Key header.
+    /// The caller provides their Jira credentials (email, API token, site URL) in the request body
+    /// along with the tickets to create. Uses Jira's bulk create API for efficient processing.
+    /// Tickets are saved to the user's account and visible in the web portal.
     /// If some tickets fail, the response includes both successes and errors (HTTP 207 Multi-Status).
     /// </remarks>
-    /// <param name="request">Jira credentials and an array of ticket objects (1–50).</param>
-    /// <returns>An array of results, each indicating success (with ticket data) or failure (with error message).</returns>
-    /// <response code="201">All tickets created successfully.</response>
-    /// <response code="207">Partial success — some tickets failed. Check individual results.</response>
-    /// <response code="400">Missing credentials, empty tickets array, or batch exceeds 50.</response>
-    /// <response code="401">Invalid Jira credentials.</response>
     [HttpPost]
     [ProducesResponseType(typeof(IEnumerable<BatchTicketResult>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IEnumerable<BatchTicketResult>), 207)]
@@ -46,12 +44,13 @@ public class FindingsController : ControllerBase
         if (request.Tickets.Count > MAX_BATCH_SIZE)
             return BadRequest(new { error = $"Batch size exceeds the maximum of {MAX_BATCH_SIZE} tickets per request." });
 
+        var userId = GetUserId();
         var ticketRequests = request.Tickets
             .Select(r => new CreateTicketRequest(r.Title, r.Description, r.ProjectKey, r.AssigneeAccountId, r.Priority))
             .ToList();
 
         var results = await _jiraService.CreateTicketsBulkWithCredentialsAsync(
-            request.JiraEmail, request.JiraApiToken, request.JiraSiteUrl, ticketRequests);
+            userId, request.JiraEmail, request.JiraApiToken, request.JiraSiteUrl, ticketRequests);
         var resultList = results.ToList();
 
         var hasFailures = resultList.Any(r => !r.Success);
@@ -59,20 +58,15 @@ public class FindingsController : ControllerBase
     }
 
     /// <summary>
-    /// Get the 10 most recent tickets created in a Jira project through IdentityHub.
+    /// Get the 10 most recent tickets created by the authenticated user in a Jira project.
     /// </summary>
     /// <remarks>
     /// Route: GET /api/v1/tickets?projectKey={key}
     ///
-    /// Requires Jira credentials via headers: X-Jira-Email, X-Jira-Api-Token, X-Jira-Site-Url.
-    /// Credentials are validated against the Jira API before returning data.
-    /// Returns the 10 most recent tickets created by any user in the organization for the specified project.
+    /// Requires API key authentication via the X-Api-Key header.
+    /// Also requires Jira credentials via headers: X-Jira-Email, X-Jira-Api-Token, X-Jira-Site-Url.
+    /// Returns the 10 most recent tickets created by this user for the specified project.
     /// </remarks>
-    /// <param name="projectKey">The Jira project key (e.g., "NHI").</param>
-    /// <returns>Up to 10 most recent ticket references.</returns>
-    /// <response code="200">Returns recent tickets.</response>
-    /// <response code="400">Missing projectKey or Jira credential headers.</response>
-    /// <response code="401">Invalid Jira credentials.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<TicketResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,7 +86,7 @@ public class FindingsController : ControllerBase
         if (!await _jiraService.ValidateCredentialsAsync(email, apiToken, siteUrl))
             return Unauthorized(new { error = "Invalid Jira credentials." });
 
-        var tickets = await _jiraService.GetRecentTicketsAsync(siteUrl, projectKey);
+        var tickets = await _jiraService.GetRecentTicketsAsync(GetUserId(), projectKey);
         return Ok(tickets);
     }
 }

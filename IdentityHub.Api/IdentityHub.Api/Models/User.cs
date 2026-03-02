@@ -14,4 +14,5 @@ public class User
 
     public JiraConfiguration? JiraConfiguration { get; set; }
     public ICollection<TicketReference> TicketReferences { get; set; } = [];
+    public ICollection<ApiKey> ApiKeys { get; set; } = [];
 }

@@ -56,7 +56,8 @@ export function LoginPage() {
           <div className="auth-about-feature">
             <strong>Multi-User &amp; Secure</strong>
             <span>
-              Shared data within org and project, isolated across organizations.
+              Each user's data is fully isolated — private even within the same
+              organization.
             </span>
           </div>
         </div>

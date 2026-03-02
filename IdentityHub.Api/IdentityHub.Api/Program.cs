@@ -1,5 +1,6 @@
 using System.Text;
 using System.Threading.RateLimiting;
+using IdentityHub.Api.Authentication;
 using IdentityHub.Api.Data;
 using IdentityHub.Api.Middleware;
 using IdentityHub.Api.Services;
@@ -35,7 +36,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
-});
+})
+.AddScheme<ApiKeyAuthOptions, ApiKeyAuthHandler>(ApiKeyAuthDefaults.AuthenticationScheme, _ => { });
 
 builder.Services.AddAuthorization();
 
@@ -43,6 +45,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJiraConfigService, JiraConfigService>();
 builder.Services.AddScoped<IJiraService, JiraService>();
+builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddHttpClient();
 
 // Rate limiting

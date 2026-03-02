@@ -1,4 +1,5 @@
-using IdentityHub.Api.Controllers;
+using System.Security.Claims;
+using IdentityHub.Api.Controllers.PublicApi;
 using IdentityHub.Api.DTOs;
 using IdentityHub.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -9,13 +10,19 @@ namespace IdentityHub.Tests;
 
 public class FindingsControllerTests
 {
+    private const int TEST_USER_ID = 1;
+
     private static FindingsController CreateController(Mock<IJiraService> mockJira)
     {
+        var claims = new[] { new Claim(ClaimTypes.NameIdentifier, TEST_USER_ID.ToString()) };
+        var identity = new ClaimsIdentity(claims, "Test");
+        var principal = new ClaimsPrincipal(identity);
+
         var controller = new FindingsController(mockJira.Object)
         {
             ControllerContext = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext()
+                HttpContext = new DefaultHttpContext { User = principal }
             }
         };
         return controller;
@@ -60,7 +67,7 @@ public class FindingsControllerTests
     {
         var mock = new Mock<IJiraService>();
         mock.Setup(s => s.CreateTicketsBulkWithCredentialsAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
+                TEST_USER_ID, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
             .ReturnsAsync([new BatchTicketResult("Title 1", true, new TicketResponse("NHI-1", "Title 1", "https://site/browse/NHI-1", DateTime.UtcNow), null)]);
 
         var controller = CreateController(mock);
@@ -74,7 +81,7 @@ public class FindingsControllerTests
     {
         var mock = new Mock<IJiraService>();
         mock.Setup(s => s.CreateTicketsBulkWithCredentialsAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
+                TEST_USER_ID, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
             .ReturnsAsync([
                 new BatchTicketResult("Title 1", true, new TicketResponse("NHI-1", "Title 1", "https://site/browse/NHI-1", DateTime.UtcNow), null),
                 new BatchTicketResult("Title 2", false, null, "Jira error")
@@ -92,7 +99,7 @@ public class FindingsControllerTests
     {
         var mock = new Mock<IJiraService>();
         mock.Setup(s => s.CreateTicketsBulkWithCredentialsAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
+                TEST_USER_ID, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<CreateTicketRequest>>()))
             .ReturnsAsync(Enumerable.Range(1, 50)
                 .Select(i => new BatchTicketResult($"Title {i}", true, new TicketResponse($"NHI-{i}", $"Title {i}", $"https://site/browse/NHI-{i}", DateTime.UtcNow), null))
                 .ToList());
@@ -121,7 +128,6 @@ public class FindingsControllerTests
     {
         var mock = new Mock<IJiraService>();
         var controller = CreateController(mock);
-        // No headers set
 
         var result = await controller.GetRecentTickets("NHI") as ObjectResult;
 
@@ -151,7 +157,7 @@ public class FindingsControllerTests
         var mock = new Mock<IJiraService>();
         mock.Setup(s => s.ValidateCredentialsAsync("a@b.com", "good-token", "https://site.atlassian.net"))
             .ReturnsAsync(true);
-        mock.Setup(s => s.GetRecentTicketsAsync("https://site.atlassian.net", "NHI"))
+        mock.Setup(s => s.GetRecentTicketsAsync(TEST_USER_ID, "NHI"))
             .ReturnsAsync([new TicketResponse("NHI-1", "Title", "https://site/browse/NHI-1", DateTime.UtcNow)]);
 
         var controller = CreateController(mock);
@@ -170,7 +176,6 @@ public class FindingsControllerTests
     {
         var mock = new Mock<IJiraService>();
         var controller = CreateController(mock);
-        // Only set one header
         controller.HttpContext.Request.Headers["X-Jira-Email"] = "a@b.com";
 
         var result = await controller.GetRecentTickets("NHI") as ObjectResult;

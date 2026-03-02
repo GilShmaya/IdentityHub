@@ -13,8 +13,7 @@ public interface IJiraService
     Task<IEnumerable<TransitionResponse>> GetTransitionsAsync(int userId, string issueKey);
     Task TransitionTicketAsync(int userId, string issueKey, TransitionRequest request);
     Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkAsync(int userId, IList<CreateTicketRequest> requests);
-    Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkWithCredentialsAsync(string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests);
+    Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkWithCredentialsAsync(int userId, string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests);
     Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(int userId, string projectKey);
-    Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(string siteUrl, string projectKey);
     Task<bool> ValidateCredentialsAsync(string email, string apiToken, string siteUrl);
 }

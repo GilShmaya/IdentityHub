@@ -370,22 +370,6 @@ public class JiraService : IJiraService
         ));
     }
 
-    public async Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(string siteUrl, string projectKey)
-    {
-        var tickets = await _db.TicketReferences
-            .Where(t => t.ProjectKey == projectKey)
-            .OrderByDescending(t => t.CreatedAt)
-            .Take(10)
-            .ToListAsync();
-
-        return tickets.Select(t => new TicketResponse(
-            t.JiraIssueKey,
-            t.Title,
-            $"{siteUrl.TrimEnd('/')}/browse/{t.JiraIssueKey}",
-            t.CreatedAt
-        ));
-    }
-
     public async Task<bool> ValidateCredentialsAsync(string email, string apiToken, string siteUrl)
     {
         try
@@ -420,7 +404,7 @@ public class JiraService : IJiraService
     }
 
     public async Task<IEnumerable<BatchTicketResult>> CreateTicketsBulkWithCredentialsAsync(
-        string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests)
+        int userId, string email, string apiToken, string siteUrl, IList<CreateTicketRequest> requests)
     {
         var client = CreateClient(email, apiToken, siteUrl);
 
@@ -437,6 +421,7 @@ public class JiraService : IJiraService
 
         var resultJson = await response.Content.ReadFromJsonAsync<JsonElement>();
         var results = new List<BatchTicketResult>();
+        var ticketRefs = new List<TicketReference>();
 
         if (resultJson.TryGetProperty("issues", out var issues))
         {
@@ -446,11 +431,27 @@ public class JiraService : IJiraService
                 var issue = createdIssues[i];
                 var issueKey = issue.GetProperty("key").GetString()!;
                 var selfUrl = $"{siteUrl.TrimEnd('/')}/browse/{issueKey}";
+                var createdAt = DateTime.UtcNow;
+
+                ticketRefs.Add(new TicketReference
+                {
+                    UserId = userId,
+                    JiraIssueKey = issueKey,
+                    ProjectKey = requests[i].ProjectKey,
+                    Title = requests[i].Title,
+                    CreatedAt = createdAt
+                });
 
                 results.Add(new BatchTicketResult(
                     requests[i].Title, true,
-                    new TicketResponse(issueKey, requests[i].Title, selfUrl, DateTime.UtcNow),
+                    new TicketResponse(issueKey, requests[i].Title, selfUrl, createdAt),
                     null));
+            }
+
+            if (ticketRefs.Count > 0)
+            {
+                _db.TicketReferences.AddRange(ticketRefs);
+                await _db.SaveChangesAsync();
             }
         }
 

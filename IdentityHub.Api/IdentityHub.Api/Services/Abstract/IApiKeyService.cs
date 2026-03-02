@@ -1,0 +1,11 @@
+using IdentityHub.Api.DTOs;
+
+namespace IdentityHub.Api.Services;
+
+public interface IApiKeyService
+{
+    Task<CreateApiKeyResponse> CreateAsync(int userId, string name);
+    Task<int?> ValidateAsync(string rawKey);
+    Task RevokeAsync(int userId, int keyId);
+    Task<IEnumerable<ApiKeyResponse>> ListByUserAsync(int userId);
+}
