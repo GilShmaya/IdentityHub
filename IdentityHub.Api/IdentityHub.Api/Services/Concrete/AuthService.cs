@@ -62,6 +62,8 @@ public class AuthService : IAuthService
             throw new InvalidOperationException("Password must contain at least one lowercase letter.");
         if (!password.Any(char.IsDigit))
             throw new InvalidOperationException("Password must contain at least one digit.");
+        if (password.All(ch => char.IsLetterOrDigit(ch)))
+            throw new InvalidOperationException("Password must contain at least one special character.");
     }
 
     private string GenerateJwtToken(User user)

@@ -21,7 +21,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute><TicketsPage /></ProtectedRoute>} />
             <Route path="/tickets/:issueKey" element={<ProtectedRoute><TicketDetailPage /></ProtectedRoute>} />
             <Route path="/jira-config" element={<ProtectedRoute><JiraConfigPage /></ProtectedRoute>} />
-            <Route path="/docs" element={<ProtectedRoute><DocsPage /></ProtectedRoute>} />
+            <Route path="/docs" element={<DocsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

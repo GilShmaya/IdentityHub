@@ -1,6 +1,17 @@
-import './Docs.css';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import "./Docs.css";
 
 export function DocsPage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      el?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [hash]);
+
   return (
     <div className="docs-container">
       <main className="docs-content docs-content-centered">
@@ -17,16 +28,17 @@ export function DocsPage() {
         <section className="docs-section">
           <h2>What is IdentityHub?</h2>
           <p>
-            Organizations manage thousands of non-human identities: service accounts,
-            API keys, service principals, OAuth clients, and certificates. When these
-            identities become stale, over-privileged, or unrotated, they pose serious
-            security risks.
+            Organizations manage thousands of non-human identities: service
+            accounts, API keys, service principals, OAuth clients, and
+            certificates. When these identities become stale, over-privileged,
+            or unrotated, they pose serious security risks.
           </p>
           <p>
             IdentityHub provides a centralized platform to report and track NHI
-            findings as Jira tickets. Security teams can create, edit, comment on,
-            and transition tickets directly from the web portal — while automated
-            systems can use the external API to submit findings programmatically.
+            findings as Jira tickets. Security teams can create, edit, comment
+            on, and transition tickets directly from the web portal — while
+            automated systems can use the external API to submit findings
+            programmatically.
           </p>
         </section>
 
@@ -36,17 +48,27 @@ export function DocsPage() {
             <div className="docs-feature">
               <span className="docs-feature-icon">⬡</span>
               <h3>Jira Integration</h3>
-              <p>Create, view, edit, comment on, and transition Jira tickets. Supports assignee, priority, and workflow status changes.</p>
+              <p>
+                Create, view, edit, comment on, and transition Jira tickets.
+                Supports assignee, priority, and workflow status changes.
+              </p>
             </div>
             <div className="docs-feature">
               <span className="docs-feature-icon">◈</span>
               <h3>External API</h3>
-              <p>Stateless REST API for CI/CD pipelines and scanners. Bulk create up to 50 tickets in a single request via Jira's bulk API.</p>
+              <p>
+                Support REST API for CI/CD pipelines and scanners. Bulk create
+                up to 50 tickets in a single request via Jira's bulk API.
+              </p>
             </div>
             <div className="docs-feature">
               <span className="docs-feature-icon">△</span>
               <h3>Multi-User &amp; Secure</h3>
-              <p>JWT authentication, per-user Jira configuration, encrypted credentials at rest. Users in the same organization and project share ticket data — data is isolated across organizations.</p>
+              <p>
+                Each user's data is fully isolated — Jira configurations,
+                tickets, and API keys are private even within the same
+                organization.
+              </p>
             </div>
           </div>
         </section>
@@ -65,24 +87,31 @@ export function DocsPage() {
               <span className="docs-step-num">2</span>
               <div>
                 <h3>Connect Jira</h3>
-                <p>Go to Jira Settings and enter your Jira email, API token, and site URL.</p>
+                <p>
+                  Go to Jira Settings and enter your Jira email, API token, and
+                  site URL.
+                </p>
               </div>
             </div>
             <div className="docs-step">
               <span className="docs-step-num">3</span>
               <div>
                 <h3>Create tickets</h3>
-                <p>Select a project, fill in the finding details, and submit. Your ticket appears in Jira instantly.</p>
+                <p>
+                  Select a project, fill in the finding details, and submit.
+                  Your ticket appears in Jira instantly.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="docs-section">
+        <section id="rest-api" className="docs-section">
           <h2>REST API</h2>
           <p>
-            IdentityHub exposes a stateless external API for programmatic access.
-            No account needed — provide your Jira credentials directly in each request.
+            IdentityHub exposes a stateless external API for programmatic
+            access. No account needed — provide your Jira credentials directly
+            in each request.
           </p>
 
           <div className="docs-endpoint">
@@ -90,7 +119,10 @@ export function DocsPage() {
               <span className="docs-method docs-method-post">POST</span>
               <code>/api/v1/tickets</code>
             </div>
-            <p>Bulk create 1–50 NHI finding tickets. Provide Jira credentials and an array of tickets in the request body.</p>
+            <p>
+              Bulk create 1–50 NHI finding tickets. Provide Jira credentials and
+              an array of tickets in the request body.
+            </p>
             <div className="docs-code-group docs-code-group-full">
               <div className="docs-code-block">
                 <span className="docs-code-label">Example</span>
@@ -114,9 +146,12 @@ export function DocsPage() {
           <div className="docs-endpoint">
             <div className="docs-endpoint-header">
               <span className="docs-method docs-method-get">GET</span>
-              <code>/api/v1/tickets?projectKey={'{key}'}</code>
+              <code>/api/v1/tickets?projectKey={"{key}"}</code>
             </div>
-            <p>Get the 10 most recent tickets for a project. Pass Jira credentials as headers.</p>
+            <p>
+              Get the 10 most recent tickets for a project. Pass Jira
+              credentials as headers.
+            </p>
             <div className="docs-code-group docs-code-group-full">
               <div className="docs-code-block">
                 <span className="docs-code-label">Example</span>

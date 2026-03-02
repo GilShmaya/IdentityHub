@@ -188,7 +188,7 @@ public class JiraService : IJiraService
         // Sync title change to local DB
         if (request.Title is not null)
         {
-            var ticketRef = await _db.TicketReferences.FirstOrDefaultAsync(t => t.JiraIssueKey == issueKey);
+            var ticketRef = await _db.TicketReferences.FirstOrDefaultAsync(t => t.JiraIssueKey == issueKey && t.UserId == userId);
             if (ticketRef is not null)
             {
                 ticketRef.Title = request.Title;
@@ -356,7 +356,18 @@ public class JiraService : IJiraService
     public async Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(int userId, string projectKey)
     {
         var (_, _, siteUrl) = await _configService.GetCredentialsAsync(userId);
-        return await GetRecentTicketsAsync(siteUrl, projectKey);
+        var tickets = await _db.TicketReferences
+            .Where(t => t.UserId == userId && t.ProjectKey == projectKey)
+            .OrderByDescending(t => t.CreatedAt)
+            .Take(10)
+            .ToListAsync();
+
+        return tickets.Select(t => new TicketResponse(
+            t.JiraIssueKey,
+            t.Title,
+            $"{siteUrl.TrimEnd('/')}/browse/{t.JiraIssueKey}",
+            t.CreatedAt
+        ));
     }
 
     public async Task<IEnumerable<TicketResponse>> GetRecentTicketsAsync(string siteUrl, string projectKey)

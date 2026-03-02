@@ -75,7 +75,9 @@ npm run dev
 ### Multi-Tenancy
 - Each user has isolated data (Jira config, tickets, API keys)
 - Data scoped via UserId foreign keys on all entities
-- No cross-user data leakage
+- All database queries in authenticated endpoints filter by the current user's ID
+- No cross-user data leakage — users can only read and modify their own records
+- External API (`/api/v1/tickets`) is stateless and credential-scoped (no user account required)
 
 ## API Endpoints
 

@@ -1,10 +1,12 @@
 using IdentityHub.Api.DTOs;
 using IdentityHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace IdentityHub.Api.Controllers;
 
 [Route("api/[controller]")]
+[EnableRateLimiting("auth")]
 public class AuthController : BaseController
 {
     private readonly IAuthService _authService;

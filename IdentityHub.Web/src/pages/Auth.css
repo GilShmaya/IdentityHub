@@ -46,6 +46,8 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
 }
 
 .auth-about-feature strong {

@@ -1,0 +1,90 @@
+POST http://localhost:5202/api/v1/tickets
+Content-Type: application/json
+
+{
+  "jiraEmail": "gilshmaya@gmail.com",
+  "jiraApiToken": "ATATT3xFfGF0_NdpSPANhXblxhmeU-4nFJ_Pic9WiygFK793laecRgA-Nni-RB2zykxNwdCQPh3zSC5I5Ctn1L4NvEVT74TiwGeaYJx-rLgqZDHbSDaGDEGQvYjBWUDkb6H4Ia5c--6FeT-s8PA6foqtDp07akqO3_MbSzXk82n4oKYyjrguvoM=006F9F21",
+  "jiraSiteUrl": "https://gilshmaya.atlassian.net",
+  "tickets": [
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    },
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "KAN",
+      "priority": "High"
+    }
+  ]
+}
+
+###

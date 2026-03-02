@@ -1,8 +1,10 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using IdentityHub.Api.Data;
 using IdentityHub.Api.Middleware;
 using IdentityHub.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +45,18 @@ builder.Services.AddScoped<IJiraConfigService, JiraConfigService>();
 builder.Services.AddScoped<IJiraService, JiraService>();
 builder.Services.AddHttpClient();
 
+// Rate limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddFixedWindowLimiter("auth", limiter =>
+    {
+        limiter.PermitLimit = 10;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+    });
+});
+
 // CORS
 builder.Services.AddCors(options =>
 {
@@ -74,6 +88,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Middleware pipeline
+app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -86,6 +101,7 @@ app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.MapControllers();
 
 app.Run();

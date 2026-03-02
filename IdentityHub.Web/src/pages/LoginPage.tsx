@@ -1,28 +1,30 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import type { AxiosError } from 'axios';
-import type { ApiError } from '../types';
-import './Auth.css';
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import type { AxiosError } from "axios";
+import type { ApiError } from "../types";
+import "./Auth.css";
 
 export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/');
+      navigate("/");
     } catch (err) {
       const axiosError = err as AxiosError<ApiError>;
-      setError(axiosError.response?.data?.error || 'Login failed. Please try again.');
+      setError(
+        axiosError.response?.data?.error || "Login failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -40,15 +42,22 @@ export function LoginPage() {
         <div className="auth-about-features">
           <div className="auth-about-feature">
             <strong>Jira Integration</strong>
-            <span>Create, edit, comment on, and transition Jira tickets directly.</span>
+            <span>
+              Create, edit, comment on, and transition Jira tickets directly for
+              your NHI organization tickets.
+            </span>
           </div>
-          <div className="auth-about-feature">
+          <Link to="/docs#rest-api" className="auth-about-feature">
             <strong>External API</strong>
-            <span>Stateless REST API for CI/CD pipelines and security scanners.</span>
-          </div>
+            <span>
+              Support REST API for CI/CD pipelines and security scanners.
+            </span>
+          </Link>
           <div className="auth-about-feature">
             <strong>Multi-User &amp; Secure</strong>
-            <span>Shared data within org and project, isolated across organizations.</span>
+            <span>
+              Shared data within org and project, isolated across organizations.
+            </span>
           </div>
         </div>
       </div>
@@ -81,7 +90,7 @@ export function LoginPage() {
             />
           </div>
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
         <p className="auth-footer">
