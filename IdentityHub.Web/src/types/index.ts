@@ -54,3 +54,19 @@ export interface JiraTransition {
 export interface ApiError {
   error: string;
 }
+
+export interface ApiKeyInfo {
+  id: number;
+  name: string;
+  prefix: string;
+  createdAt: string;
+  isRevoked: boolean;
+}
+
+export interface CreateApiKeyResponse {
+  id: number;
+  name: string;
+  key: string;
+  prefix: string;
+  createdAt: string;
+}

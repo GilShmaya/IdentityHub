@@ -1,3 +1,39 @@
+###
+# curl -X POST http://localhost:5202/api/v1/tickets 
+#  -H "Content-Type: application/json" 
+#  -H "X-Api-Key: YOUR_API_KEY" 
+#  -d '{
+#    "jiraEmail": "bot@company.com",
+#    "jiraApiToken": "ATATT3xFfGF0...",
+#    "jiraSiteUrl": "https://yoursite.atlassian.net",
+#    "tickets": [{
+#      "title": "Stale API key: prod-gateway",
+#      "description": "Last rotated 365 days ago.",
+#      "projectKey": "NHI",
+#      "priority": "High"
+#    }]
+#  }'
+POST http://localhost:5202/api/v1/tickets
+X-Api-Key: YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "jiraEmail": "bot@company.com",
+  "jiraApiToken": "ATATT3xFfGF0...",
+  "jiraSiteUrl": "https://yoursite.atlassian.net",
+  "tickets": [
+    {
+      "title": "Stale API key: prod-gateway",
+      "description": "Last rotated 365 days ago.",
+      "projectKey": "NHI",
+      "priority": "High"
+    }
+  ]
+}
+
+###
+
+
 POST http://localhost:5202/api/v1/tickets
 Content-Type: application/json
 

@@ -26,6 +26,9 @@ export function Navbar() {
         <Link to="/jira-config" className={location.pathname === '/jira-config' ? 'active' : ''}>
           Jira Settings
         </Link>
+        <Link to="/api-keys" className={location.pathname === '/api-keys' ? 'active' : ''}>
+          API Keys
+        </Link>
         <Link to="/docs" className={location.pathname === '/docs' ? 'active' : ''}>
           About
         </Link>
